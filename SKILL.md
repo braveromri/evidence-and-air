@@ -1,6 +1,6 @@
 ---
 name: evidence-and-air
-description: Build scientific and clinical presentations to congress standard, in the "Evidence & Air" visual style. Use whenever the user asks for a deck, slides, a talk, a lecture, grand rounds, journal club, a congress or conference presentation, or a .pptx — and whenever they ask to redesign or critique existing slides. Runs a 7-stage pipeline with blocking quality gates, sources every claim from primary literature, and builds the file with pptxgenjs.
+description: Build or upgrade scientific and clinical presentations to congress standard, in the "Evidence & Air" visual style. Use for BOTH entry points — (1) a new deck, talk, lecture, grand rounds, journal club, congress presentation or .pptx from scratch, and (2) an existing or half-finished deck that is not good enough: "make this better", "this isn't wow", "polish my slides", "redesign this deck", "review my presentation", "it looks amateurish", "upgrade these slides", or any .pptx the user shares wanting it improved. Diagnoses evidence quality and visual design separately, runs blocking quality gates, and builds with pptxgenjs.
 ---
 
 # Evidence & Air — Scientific Presentation Builder
@@ -31,6 +31,22 @@ not advisory.
 > If `presentation-builder` is also available, this skill supersedes it wherever they differ.
 > Use the bundled `pptx` skill for file mechanics — it documents the pptxgenjs footguns and
 > ships `scripts/office/validate.py`.
+
+---
+
+## Which track are you on
+
+Decide this first, in one line, and say which you are running.
+
+| The user has… | Track | Route |
+|---|---|---|
+| A topic and no slides | **A — New deck** | Stage 0, then Stages 1 → 7 |
+| A deck, or a half-built one, that is not good enough | **B — Upgrade** | Stage 0, then Stages B1 → B3, rejoining at Stage 5 |
+
+Track B is not a lesser path. An existing deck that "isn't wow" usually fails on two separate
+axes — the evidence and the design — and they need separate diagnoses, because fixing the
+typography on a slide whose underlying claim is unsourced just makes a weak claim look
+confident. Never start redesigning before you have run the audit in B1.
 
 ---
 
@@ -211,6 +227,96 @@ you assumed at intake, so Stage 1 defaults better next time.
 
 Keep the file lean. Merge and prune redundant entries rather than letting it grow into a
 transcript. Every entry is a question you will not have to ask again.
+
+---
+
+# Track B — upgrading an existing deck
+
+Use when the user already has slides and wants them better. Run Stage 0 first, exactly as in
+Track A: the lessons file and the style guide apply identically.
+
+## Stage B1 — Read it, then audit it on two axes
+
+**Look at the deck before saying anything about it.** Two passes, both required:
+
+- **Content:** `markitdown deck.pptx` — one block per slide under `<!-- Slide number: N -->`.
+- **Visual:** `python scripts/thumbnail.py deck.pptx <name>-thumbs` (from the bundled `pptx`
+  skill) for a labelled grid of every slide. **Always pass the second argument** — it defaults
+  to `thumbnails` and silently overwrites another deck's grid. Then actually view the image.
+
+An audit written from the text alone will miss every layout problem, which is usually where
+"not wow" actually lives. Do not skip the thumbnails.
+
+Then score it on the two axes **separately**, because they fail independently and the user
+experiences them as one vague dissatisfaction. Report per-slide, naming slide numbers.
+
+### Axis 1 — Professional / evidence
+
+- Claims with no source at all
+- Sources that exist but are stale — superseded guidelines, a trial overtaken since
+- Statistics with no N; effect estimates with no CI; percentages with no denominator
+- Preliminary or contested findings presented as settled
+- Missing disclosures slide where the venue requires one
+- Chart integrity: 3D effects, truncated y-axis, unlabelled axes, inconsistent precision
+- No references slide, or references not in AMA 11th ed.
+
+### Axis 2 — Graphic / design
+
+- Bullets over 6 words; slides over 4 bullets; full sentences on screen
+- Body under 28pt, titles under 40pt
+- Content slides with no visual element at all
+- **The banned anti-patterns** from `presentation-lessons.md` — two-column bullet comparisons,
+  a bar chart for exactly two data points, an explanatory paragraph under a hook line
+- More than one accent colour on screen; palette drift across slides
+- No consistent wayfinding or motif — nothing tying the slides into one object
+- Dense layouts where one big number would land harder
+- An opening slide that is a title or agenda rather than a hook
+
+**Gate B1.** The audit names specific slides and specific defects. "The design could be
+stronger" is not an audit. Every finding is something a named slide does or fails to do.
+
+## Stage B2 — Triage, and get agreement before touching anything
+
+Sort every finding into one of three outcomes, and tell the user which the deck needs:
+
+| Verdict | When | What happens |
+|---|---|---|
+| **Re-skin** | Content and argument are sound; the design is the problem | Rebuild the slides in Evidence & Air, preserving the content as-is. The common case. |
+| **Restructure** | The narrative order or emphasis is wrong | Return to Stage 3, then Stage 4, keeping the evidence |
+| **Re-evidence** | Claims are unsourced, stale, or overstated | Return to Stage 2 for those specific claims before anything visual |
+
+A deck can need more than one. Say so plainly, in priority order, and say which you would do
+first — evidence before design, always, since polishing an unsupported claim only makes it more
+persuasive than it deserves to be.
+
+Present the punch-list and **wait for agreement**. This is someone's existing work: never
+silently rewrite their claims, drop their content, or change their argument. If a claim looks
+wrong, flag it and ask — they may know something the literature search does not.
+
+**Gate B2.** The user has seen the punch-list and agreed on scope. Do not skip ahead to
+building because the fixes seem obvious.
+
+## Stage B3 — Rebuild, or operate
+
+Default to **rebuilding in Evidence & Air** using the primitives in
+`references/evidence-and-air.js`, carrying the approved content across. A style this
+systematic is far cleaner to rebuild than to retrofit, and retrofitting tends to leave half
+the old deck's inconsistencies in place.
+
+**Operate on the original file instead** only when the deck must keep a mandated template —
+a congress skin, an institutional master. Then unzip, edit `ppt/slides/slideN.xml`, and
+re-zip per the `pptx` skill, and apply the style's principles *within* the mandated palette:
+the word counts, the single accent, one idea per slide, N and CI visible, and a consistent
+baseline strip still all apply.
+
+Either way, **preserve what was already good.** If a slide already works, say so and leave it
+alone. An upgrade that rewrites everything tells the user their judgment was worthless, and it
+is usually also wrong.
+
+**Then rejoin Track A at Stage 5** for the build and the speaker notes, Stage 6 for the quality
+gate, and Stage 7 for the lessons entry. Note in that entry which axis the deck actually failed
+on — over several decks this reveals whether this user's weak spot is evidence or design, and
+Stage 1 can pre-empt it.
 
 ---
 
