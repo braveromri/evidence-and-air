@@ -23,40 +23,36 @@ means.
 > what creates the folder we're about to use — if you installed it and never opened it, the
 > path in step 2 simply won't exist.
 
-### 1. Download the skill
+### 1. Download and extract
 
-On the project's main page on GitHub, click the green **Code** button, then **Download ZIP**.
-Extract it (right-click → Extract All).
+On the [project's downloads page](https://github.com/braveromri/evidence-and-air/releases/latest),
+click `evidence-and-air.zip`.
 
-The extracted folder will be called `evidence-and-air-main`.
-**Rename it to `evidence-and-air`** — without the suffix. This matters.
+Once it lands, right-click it → **Extract All** (on macOS, just double-click).
+You'll get a folder called `evidence-and-air`.
 
-### 2. Move it into your skills folder
+### 2. Double-click the installer
 
-That folder is hidden by default, so don't go hunting for it — just paste the path.
+Inside that folder is one file that needs you:
 
-**On Windows** — open File Explorer, paste this into the address bar at the top, press Enter:
+- **On Windows** — `install-windows.bat`
+- **On macOS** — `install-mac.command`
 
-```
-%USERPROFILE%\.claude\skills
-```
+Double-click it, and that's it. A small black window opens, reports what it's doing, and closes
+when you press a key. It finds the right folder itself, copies the files there, and verifies
+they arrived.
 
-**On macOS** — open Finder, press `Cmd+Shift+G`, paste this, press Enter:
+On macOS you may see a warning that the file was downloaded from the internet.
+Right-click → **Open**, then confirm.
 
-```
-~/.claude/skills
-```
-
-Those odd-looking symbols are a shortcut your computer recognises — they lead to your personal
-folder. You don't need to understand them; just paste them exactly as they are.
-
-If the `skills` folder doesn't exist, create it with exactly that name, lowercase.
-Now move the `evidence-and-air` folder into it.
+> **Prefer to do it by hand?** The installer only saves you typing. Copy the `evidence-and-air`
+> folder into `%USERPROFILE%\.claude\skills\` on Windows, or `~/.claude/skills/` on macOS.
+> If the `skills` folder doesn't exist, create it in lowercase.
 
 ### 3. Quit Claude completely and reopen it
 
 Minimising isn't enough — close the window and start it again. Skills are only loaded at
-startup. **This is the number one reason for "nothing happened".**
+startup. **This is the number one reason for "nothing happened".** The installer reminds you too.
 
 ### Check it worked
 
@@ -192,7 +188,7 @@ remember next time too.
 ### I asked for a deck and nothing special happened
 
 The skill didn't load. Almost always: you didn't quit and reopen Claude after copying, or the
-folder isn't in the right place. Go back to step 2 and confirm `SKILL.md` sits directly inside
+folder isn't in the right place. Run the installer again and confirm `SKILL.md` sits directly inside
 `evidence-and-air`, with no extra folder in between.
 
 ### It built a deck but it doesn't look like what was promised

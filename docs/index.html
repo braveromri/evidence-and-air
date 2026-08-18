@@ -341,36 +341,33 @@
     <ol class="steps">
       <li>
         <div>
-          <h3>הורד את התוספת</h3>
+          <h3>הורד ופרק</h3>
           <p>
-            היכנס ל‑<a href="https://github.com/braveromri/evidence-and-air">github.com/braveromri/evidence-and-air</a>,
-            לחץ על הכפתור הירוק <b>Code</b> ואז על <b>Download ZIP</b>.
-            פרק את הקובץ שהורדת (קליק ימני ← חלץ הכל / Extract All).
+            בעמוד <a href="https://github.com/braveromri/evidence-and-air/releases/latest">ההורדות של הפרויקט</a>,
+            לחץ על הקובץ <code>evidence-and-air.zip</code>.
           </p>
           <p>
-            התיקייה שתתקבל תיקרא <code>evidence-and-air-main</code>.
-            <b>שנה את שמה ל‑<code>evidence-and-air</code></b> — בלי הסיומת.
-            קליק ימני ← שנה שם. זה חשוב.
+            אחרי שירד — קליק ימני עליו ← <b>חלץ הכל</b> (ב‑Mac: לחיצה כפולה).
+            תתקבל תיקייה בשם <code>evidence-and-air</code>.
           </p>
         </div>
       </li>
 
       <li>
         <div>
-          <h3>העתק אותה לתיקיית התוספות</h3>
-          <p>התיקייה הזו מוסתרת כברירת מחדל, אז אל תחפש אותה ידנית — פשוט הדבק את הכתובת:</p>
-          <p><b>ב‑Windows:</b> פתח את סייר הקבצים (התיקייה הצהובה בשורת המשימות), הדבק את
-            השורה הבאה בשורת הכתובת הארוכה שלמעלה, ולחץ Enter:</p>
-<pre>%USERPROFILE%\.claude\skills</pre>
-          <p><b>ב‑Mac:</b> פתח Finder, לחץ <code>Cmd+Shift+G</code>, הדבק את זה ולחץ Enter:</p>
-<pre>~/.claude/skills</pre>
-          <p style="font-size:.92rem;color:var(--faint)">
-            הסימנים המוזרים הם קיצור דרך שהמחשב מזהה — הם מובילים לתיקייה האישית שלך.
-            אין צורך להבין אותם; רק להדביק בדיוק כמו שהם.
+          <h3>לחץ פעמיים על המתקין</h3>
+          <p>בתוך התיקייה יש קובץ אחד שצריך אותך:</p>
+          <p>
+            <b>ב‑Windows</b> — <code>install-windows.bat</code><br>
+            <b>ב‑Mac</b> — <code>install-mac.command</code>
           </p>
           <p>
-            אם התיקייה <code>skills</code> לא קיימת — צור אותה בשם הזה בדיוק, באותיות קטנות.
-            עכשיו העתק לתוכה את התיקייה <code>evidence-and-air</code>.
+            לחיצה כפולה, וזהו. ייפתח חלון שחור קטן שמדווח מה הוא עושה, ונסגר כשתלחץ מקש.
+            הוא מוצא לבד את התיקייה הנכונה, מעתיק לשם את הקבצים, ובודק שהכול הגיע.
+          </p>
+          <p style="font-size:.92rem;color:var(--faint)">
+            ב‑Mac ייתכן שתופיע אזהרה שהקובץ הורד מהאינטרנט. קליק ימני ← <b>Open</b>, ואז
+            אישור — זה מדלג עליה.
           </p>
         </div>
       </li>
@@ -380,11 +377,26 @@
           <h3>סגור את Claude לגמרי ופתח מחדש</h3>
           <p>
             לא מספיק למזער — צריך לסגור את החלון ולפתוח שוב. תוספות נטענות רק בהפעלה.
-            <b>זו הסיבה מספר אחת לכך ש"לא קרה כלום".</b>
+            <b>זו הסיבה מספר אחת לכך ש"לא קרה כלום".</b> המתקין יזכיר לך את זה גם הוא.
           </p>
         </div>
       </li>
     </ol>
+
+    <details style="margin-top:2rem">
+      <summary style="cursor:pointer;font-family:var(--label);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">
+        מעדיף לעשות את זה ידנית?
+      </summary>
+      <div style="margin-top:1rem">
+        <p>אין בעיה — המתקין רק חוסך הקלדה. הוא מעתיק את התיקייה אל:</p>
+<pre>Windows:  %USERPROFILE%\.claude\skillsMac:      ~/.claude/skills/</pre>
+        <p style="font-size:.92rem;color:var(--muted)">
+          ב‑Windows הדבק את השורה בשורת הכתובת של סייר הקבצים; ב‑Mac ב‑Finder עם
+          <code>Cmd+Shift+G</code>. אם התיקייה <code>skills</code> לא קיימת, צור אותה
+          באותיות קטנות. אז העתק לתוכה את התיקייה <code>evidence-and-air</code> כמו שהיא.
+        </p>
+      </div>
+    </details>
 
     <div class="callout">
       <b>בדיקה שהכול תקין.</b> בסיום, המבנה צריך להיראות בדיוק כך — קובץ בשם

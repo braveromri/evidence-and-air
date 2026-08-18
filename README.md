@@ -27,11 +27,12 @@ claim is unsourced only makes a weak claim look confident.
 > **Prerequisite:** Claude Desktop or Claude Code, installed and **opened at least once** —
 > that first launch is what creates the `.claude` folder you are about to use.
 
-1. **Code** → **Download ZIP**, and extract.
-2. Rename the folder from `evidence-and-air-main` to **`evidence-and-air`**.
-3. Move it into `%USERPROFILE%\.claude\skills\` on Windows, or `~/.claude/skills/` on macOS.
-   Create the `skills` folder if it isn't there.
-4. Quit Claude completely and reopen it — skills are only loaded at startup.
+1. Download `evidence-and-air.zip` from the [latest release](https://github.com/braveromri/evidence-and-air/releases/latest) and extract it.
+2. Double-click **`install-windows.bat`** (Windows) or **`install-mac.command`** (macOS).
+3. Quit Claude completely and reopen it — skills are only loaded at startup.
+
+The installer places the folder in `~/.claude/skills/` for you. To do it by hand instead, just
+copy the `evidence-and-air` folder there yourself.
 
 Then just ask: *"Build me a 20-minute talk on [topic] for [audience]."*
 Or share a `.pptx` and ask for it to be improved.

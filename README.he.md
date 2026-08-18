@@ -28,11 +28,12 @@
 > **דרישה מקדימה:** Claude Desktop או Claude Code, מותקן ו**נפתח לפחות פעם אחת** — ההפעלה
 > הראשונה היא זו שיוצרת את תיקיית `.claude` שאליה נכניס את הקבצים.
 
-1. **Code** ← **Download ZIP**, ופרק את הקובץ.
-2. שנה את שם התיקייה מ‑`evidence-and-air-main` ל‑**`evidence-and-air`**.
-3. העבר אותה אל `%USERPROFILE%\.claude\skills\` בווינדוס, או `~/.claude/skills/` במאק.
-   אם התיקייה `skills` לא קיימת — צור אותה.
-4. סגור את Claude לגמרי ופתח מחדש — תוספות נטענות רק בהפעלה.
+1. הורד את `evidence-and-air.zip` מ[עמוד ההורדות](https://github.com/braveromri/evidence-and-air/releases/latest) ופרק אותו.
+2. לחץ פעמיים על **`install-windows.bat`** (ווינדוס) או **`install-mac.command`** (מאק).
+3. סגור את Claude לגמרי ופתח מחדש — תוספות נטענות רק בהפעלה.
+
+המתקין מניח את התיקייה ב‑`~/.claude/skills/` בשבילך. מי שמעדיף ידנית — פשוט מעתיק לשם את
+התיקייה `evidence-and-air` בעצמו.
 
 ואז פשוט בקש: *"תבנה לי מצגת של 20 דקות על [נושא], ל[קהל]."*
 או גרור קובץ `.pptx` קיים ובקש לשפר אותו.
