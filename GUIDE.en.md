@@ -7,6 +7,16 @@ Do exactly what it says, in order.
 
 ---
 
+## What are you actually installing?
+
+Not software. A folder containing a few text files — instructions that Claude reads. Nothing
+"runs" on your computer, there is nothing to open and nothing to launch, and you cannot break
+anything. You are simply copying a folder into a place Claude knows to look, and it finds it
+by itself. In Claude's world this is called a **skill** — if you hear the word, that's what it
+means.
+
+---
+
 ## Part A · Install (once)
 
 > **One prerequisite:** Claude must have been **opened at least once**. That first launch is
@@ -36,6 +46,9 @@ That folder is hidden by default, so don't go hunting for it — just paste the 
 ```
 ~/.claude/skills
 ```
+
+Those odd-looking symbols are a shortcut your computer recognises — they lead to your personal
+folder. You don't need to understand them; just paste them exactly as they are.
 
 If the `skills` folder doesn't exist, create it with exactly that name, lowercase.
 Now move the `evidence-and-air` folder into it.
@@ -84,8 +97,8 @@ anything it finds, and pull numbers and phrasing from it rather than searching b
 
 ### Or: you already have a deck that isn't good enough
 
-This works in reverse too. If you started a deck and it isn't at the level you wanted, drag
-the `.pptx` into the conversation and write something like:
+This works in reverse too. If you started a deck and it isn't at the level you wanted, drag the
+PowerPoint file (the one ending in `.pptx`) into the conversation and write something like:
 
 > This deck isn't good enough. Go through it, tell me what isn't working, then fix it.
 
@@ -187,10 +200,12 @@ folder isn't in the right place. Go back to step 2 and confirm `SKILL.md` sits d
 Claude's own general presentation skill probably loaded instead of this one.
 Tell it explicitly: *"use the evidence-and-air skill"*, and it will switch.
 
-### An error about `pptxgenjs`
+### An error mentioning a word I don't recognise
 
-That's the component that writes the PowerPoint file, and it's already present in most cases.
-If not, ask Claude to run `npm install pptxgenjs`. It knows how to do that itself.
+Don't try to decode it. **Copy the error, paste it into the conversation, and write "fix this".**
+That works almost every time — Claude can read its own errors and correct them. The common one
+here mentions an internal component called `pptxgenjs`, and the fix is a single line it runs
+itself.
 
 ---
 
