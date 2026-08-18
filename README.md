@@ -1,8 +1,10 @@
 # Evidence &amp; Air
 
+**English** · [עברית](README.he.md)
+
 **Congress-standard scientific and clinical presentations — a skill for Claude.**
 
-### 📖 [המדריך המלא בעברית → braveromri.github.io/evidence-and-air](https://braveromri.github.io/evidence-and-air/)
+📖 Step-by-step walkthrough: [**GUIDE.en.md**](GUIDE.en.md) · [בעברית](GUIDE.md) · [designed version](https://braveromri.github.io/evidence-and-air/)
 
 ---
 
@@ -22,10 +24,14 @@ claim is unsourced only makes a weak claim look confident.
 
 ## Install
 
+> **Prerequisite:** Claude Desktop or Claude Code, installed and **opened at least once** —
+> that first launch is what creates the `.claude` folder you are about to use.
+
 1. **Code** → **Download ZIP**, and extract.
 2. Rename the folder from `evidence-and-air-main` to **`evidence-and-air`**.
 3. Move it into `%USERPROFILE%\.claude\skills\` on Windows, or `~/.claude/skills/` on macOS.
-4. Quit Claude completely and reopen it.
+   Create the `skills` folder if it isn't there.
+4. Quit Claude completely and reopen it — skills are only loaded at startup.
 
 Then just ask: *"Build me a 20-minute talk on [topic] for [audience]."*
 Or share a `.pptx` and ask for it to be improved.

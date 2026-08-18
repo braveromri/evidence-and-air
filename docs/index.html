@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="מצגות מדעיות ברמת כנס — תוספת ל-Claude. מדריך מלא מאפס: התקנה, בנייה של מצגת חדשה, ושיפור מצגת קיימת.">
+<meta name="description" content="מצגות מדעיות ברמת כנס — תוספת ל-Claude. מדריך מלא: התקנה, בנייה של מצגת חדשה, ושיפור מצגת קיימת.">
 <meta name="author" content="Dr. Omri Braver">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Evidence &amp; Air">
 <meta property="og:title" content="Evidence &amp; Air">
-<meta property="og:description" content="מצגות מדעיות ברמת כנס — תוספת ל-Claude. מדריך מלא מאפס: התקנה, בנייה של מצגת חדשה, ושיפור מצגת קיימת.">
+<meta property="og:description" content="מצגות מדעיות ברמת כנס — תוספת ל-Claude. מדריך מלא: התקנה, בנייה של מצגת חדשה, ושיפור מצגת קיימת.">
 <meta property="og:url" content="https://braveromri.github.io/evidence-and-air/">
 <meta property="og:image" content="https://braveromri.github.io/evidence-and-air/og.png">
 <meta property="og:image:width" content="1200">
@@ -311,28 +311,26 @@
       טובה</b> — אז היא מאבחנת מה חלש בתוכן ומה חלש בעיצוב, בנפרד, ומשפרת רק אחרי שאישרת.
     </p>
     <p class="lede">
-      המדריך הזה מניח שלא התקנת שום דבר ולא השתמשת ב‑Claude מעולם. עשה בדיוק מה שכתוב,
-      לפי הסדר.
+      המדריך הזה מניח ש‑Claude כבר מותקן אצלך, ושמעבר לזה אתה לא יודע דבר.
+      עשה בדיוק מה שכתוב, לפי הסדר.
+    </p>
+    <p class="lede" style="font-size:.92rem">
+      <a href="https://github.com/braveromri/evidence-and-air/blob/main/GUIDE.en.md">This guide in English →</a>
     </p>
   </header>
 
   <div class="strip"><span>חלק א · התקנה</span><span>פעם אחת בלבד</span></div>
 
   <section>
-    <h2>ארבעה שלבים, ואז סיימת לתמיד</h2>
+    <h2>שלושה שלבים, ואז סיימת לתמיד</h2>
+
+    <div class="callout" style="margin:0 0 2rem">
+      <b>דרישה מקדימה אחת:</b> ש‑Claude יהיה מותקן ו<b>נפתח לפחות פעם אחת</b>. ההפעלה הראשונה
+      היא זו שיוצרת את התיקייה שאליה נכניס את הקבצים — אם הותקן ומעולם לא נפתח, הנתיב בשלב 2
+      פשוט לא יהיה קיים.
+    </div>
 
     <ol class="steps">
-      <li>
-        <div>
-          <h3>התקן את Claude</h3>
-          <p>
-            אם עוד לא — הורד את אפליקציית Claude מ‑<a href="https://claude.ai/download">claude.ai/download</a>,
-            התקן, והתחבר עם החשבון שלך. פתח אותה פעם אחת ותן לה לעלות עד הסוף. זה חשוב:
-            רק בהפעלה הראשונה היא יוצרת את התיקייה שאליה נכניס את התוספת.
-          </p>
-        </div>
-      </li>
-
       <li>
         <div>
           <h3>הורד את התוספת</h3>
@@ -382,8 +380,10 @@
 <pre>.claude/skills/evidence-and-air/
 ├── SKILL.md
 ├── GUIDE.md
+├── GUIDE.en.md
 ├── LICENSE
 ├── README.md
+├── README.he.md
 ├── presentation-lessons.md
 └── references/
     ├── style-guide.md
@@ -555,7 +555,7 @@
       <dt>ביקשתי מצגת ולא קרה כלום מיוחד</dt>
       <dd>
         התוספת לא נטענה. כמעט תמיד: לא סגרת ופתחת את Claude אחרי ההעתקה, או שהתיקייה
-        לא במקום הנכון. חזור לשלב 3 ווודא ש‑<code>SKILL.md</code> יושב ישירות בתוך
+        לא במקום הנכון. חזור לשלב 2 ווודא ש‑<code>SKILL.md</code> יושב ישירות בתוך
         <code>evidence-and-air</code>, בלי תיקייה נוספת באמצע.
       </dd>
 
