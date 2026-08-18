@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="מצגות מדעיות ברמת כנס — תוספת ל-Claude. מדריך מלא מאפס: התקנה, בנייה של מצגת חדשה, ושיפור מצגת קיימת.">
+<meta name="author" content="Dr. Omri Braver">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Evidence &amp; Air">
+<meta property="og:title" content="Evidence &amp; Air">
+<meta property="og:description" content="מצגות מדעיות ברמת כנס — תוספת ל-Claude. מדריך מלא מאפס: התקנה, בנייה של מצגת חדשה, ושיפור מצגת קיימת.">
+<meta property="og:url" content="https://braveromri.github.io/evidence-and-air/">
+<meta property="og:image" content="https://braveromri.github.io/evidence-and-air/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="he_IL">
+<meta name="twitter:card" content="summary_large_image">
+<title>Evidence &amp; Air</title>
+
+<style>
+  /* ── Evidence & Air, as a page ───────────────────────────────────────────
+     The style is a two-register system: Paper (warm light) for data and
+     content, Ink (deep navy) for narrative. Those map onto the viewer's
+     light and dark themes rather than being invented for the web.
+     ------------------------------------------------------------------- */
+
+  :root {
+    --ground:    #FAFAF8;
+    --surface:   #F2EFE9;
+    --sunk:      #EFEBE3;
+    --text:      #13192B;
+    --muted:     #5B6B85;
+    --faint:     #8D9099;
+    --rule:      #D8D5CE;
+    --accent:    #C75B3E;
+
+    --sans:  "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --label: "Trebuchet MS", "Segoe UI", sans-serif;
+    --serif: Georgia, "Times New Roman", serif;
+    --mono:  "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+
+    --measure: 36rem;
+    --gutter:  clamp(1.25rem, 5vw, 3rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:  #13192B;
+      --surface: #1B2237;
+      --sunk:    #101626;
+      --text:    #F2EFE9;
+      --muted:   #97A3BC;
+      --faint:   #7A839A;
+      --rule:    #2C344B;
+      --accent:  #DC7150;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:  #13192B;
+    --surface: #1B2237;
+    --sunk:    #101626;
+    --text:    #F2EFE9;
+    --muted:   #97A3BC;
+    --faint:   #7A839A;
+    --rule:    #2C344B;
+    --accent:  #DC7150;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.68;
+    margin: 0;
+    padding: 0 var(--gutter) 5rem;
+    direction: rtl;
+    text-align: right;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--measure); margin: 0 auto; }
+
+  /* the readout strip — the deck motif, doing section wayfinding here */
+  .strip {
+    border-top: 1px solid var(--rule);
+    padding-top: .5rem;
+    margin: 4rem 0 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--label);
+    font-size: .688rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  header { padding: 5rem 0 0; }
+
+  .eyebrow {
+    font-family: var(--label);
+    font-size: .688rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 1.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 7vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+    direction: ltr;
+    text-align: right;
+  }
+
+  .standfirst {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.15rem, 3.2vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--accent);
+    text-wrap: balance;
+    margin: 1.5rem 0 0;
+  }
+
+  .lede { color: var(--muted); margin: 1.25rem 0 0; }
+
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1.25;
+    text-wrap: balance;
+    margin: 0 0 1.1rem;
+  }
+
+  h3 { font-size: 1.02rem; font-weight: 600; margin: 0 0 .4rem; }
+
+  p { margin: 0 0 1.1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: .2em; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; }
+
+  /* ── numbered steps — a real sequence ─────────────────────────────── */
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; display: flex; flex-direction: column; gap: 2.25rem; }
+
+  .steps > li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .steps > li::before {
+    content: counter(step);
+    counter-increment: step;
+    font-family: var(--label);
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-top: 2px solid var(--accent);
+    padding-top: .45rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── code ─────────────────────────────────────────────────────────── */
+  pre, code { font-family: var(--mono); }
+
+  pre {
+    direction: ltr;
+    text-align: left;
+    background: var(--sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .85rem 1rem;
+    margin: .8rem 0 0;
+    overflow-x: auto;
+    font-size: .8rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  code:not(pre code) {
+    direction: ltr;
+    unicode-bidi: embed;
+    background: var(--sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .08em .38em;
+    font-size: .84em;
+  }
+
+  /* ── the stage walkthrough ────────────────────────────────────────── */
+  .stages { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .stage {
+    border-inline-start: 2px solid var(--rule);
+    padding-inline-start: 1.1rem;
+  }
+  .stage.key { border-inline-start-color: var(--accent); }
+
+  .stage .who {
+    font-family: var(--label);
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: block;
+    margin-bottom: .3rem;
+  }
+  .stage.key .who { color: var(--accent); }
+  .stage p { margin: 0; color: var(--muted); }
+  .stage p + p { margin-top: .6rem; }
+  .stage b { color: var(--text); font-weight: 600; }
+
+  /* ── quoted prompt ────────────────────────────────────────────────── */
+  .prompt {
+    border-inline-start: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1.1rem 1.25rem;
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+  .prompt cite {
+    display: block;
+    margin-top: .7rem;
+    font-family: var(--label);
+    font-size: .688rem;
+    font-style: normal;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ── callout ──────────────────────────────────────────────────────── */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1rem 1.15rem;
+    margin: 1.5rem 0 0;
+    font-size: .95rem;
+    color: var(--muted);
+  }
+  .callout b { color: var(--text); }
+
+  /* ── habits ───────────────────────────────────────────────────────── */
+  .habits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.4rem; }
+  .habits li { padding-inline-start: 1.1rem; position: relative; }
+  .habits li::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: .72em;
+    width: .45rem; height: 1px;
+    background: var(--accent);
+  }
+  .habits p { color: var(--muted); margin: .25rem 0 0; font-size: .95rem; }
+
+  /* ── troubleshooting ──────────────────────────────────────────────── */
+  dl { margin: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+  dt { font-weight: 600; margin-bottom: .25rem; }
+  dd { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  footer {
+    margin-top: 4rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    font-size: .875rem;
+    color: var(--faint);
+  }
+  footer strong { color: var(--muted); font-weight: 600; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a { transition: opacity .15s ease; }
+    a:hover { opacity: .75; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">מדריך מלא · מאפס</p>
+    <h1>Evidence &amp; Air</h1>
+    <p class="standfirst">מצגות מדעיות ברמת כנס — בלי לדעת שום דבר על AI.</p>
+    <p class="lede">
+      זו תוספת ל‑Claude שמלמדת אותו לבנות מצגות קליניות ומדעיות ברמה גבוהה: הוא מחפש את
+      המחקרים בעצמו, בונה נרטיב, מעצב את השקפים וכותב לך את מה שאומרים בעל פה מתחת לכל שקף.
+      התוצאה היא קובץ PowerPoint רגיל.
+    </p>
+    <p class="lede">
+      היא עובדת בשני כיוונים: <b>מנושא בלי שקפים</b>, או <b>ממצגת קיימת שהתחלת והיא לא מספיק
+      טובה</b> — אז היא מאבחנת מה חלש בתוכן ומה חלש בעיצוב, בנפרד, ומשפרת רק אחרי שאישרת.
+    </p>
+    <p class="lede">
+      המדריך הזה מניח שלא התקנת שום דבר ולא השתמשת ב‑Claude מעולם. עשה בדיוק מה שכתוב,
+      לפי הסדר.
+    </p>
+  </header>
+
+  <div class="strip"><span>חלק א · התקנה</span><span>פעם אחת בלבד</span></div>
+
+  <section>
+    <h2>ארבעה שלבים, ואז סיימת לתמיד</h2>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>התקן את Claude</h3>
+          <p>
+            אם עוד לא — הורד את אפליקציית Claude מ‑<a href="https://claude.ai/download">claude.ai/download</a>,
+            התקן, והתחבר עם החשבון שלך. פתח אותה פעם אחת ותן לה לעלות עד הסוף. זה חשוב:
+            רק בהפעלה הראשונה היא יוצרת את התיקייה שאליה נכניס את התוספת.
+          </p>
+        </div>
+      </li>
+
+      <li>
+        <div>
+          <h3>הורד את התוספת</h3>
+          <p>
+            היכנס ל‑<a href="https://github.com/braveromri/evidence-and-air">github.com/braveromri/evidence-and-air</a>,
+            לחץ על הכפתור הירוק <b>Code</b> ואז על <b>Download ZIP</b>.
+            פרק את הקובץ שהורדת (קליק ימני ← חלץ הכל / Extract All).
+          </p>
+          <p>
+            התיקייה שתתקבל תיקרא <code>evidence-and-air-main</code>.
+            <b>שנה את שמה ל‑<code>evidence-and-air</code></b> — בלי הסיומת.
+            קליק ימני ← שנה שם. זה חשוב.
+          </p>
+        </div>
+      </li>
+
+      <li>
+        <div>
+          <h3>העתק אותה לתיקיית התוספות</h3>
+          <p>התיקייה הזו מוסתרת כברירת מחדל, אז אל תחפש אותה ידנית — פשוט הדבק את הכתובת:</p>
+          <p><b>ב‑Windows:</b> פתח סייר הקבצים, הדבק בשורת הכתובת למעלה את זה ולחץ Enter:</p>
+<pre>%USERPROFILE%\.claude\skills</pre>
+          <p><b>ב‑Mac:</b> פתח Finder, לחץ <code>Cmd+Shift+G</code>, הדבק את זה ולחץ Enter:</p>
+<pre>~/.claude/skills</pre>
+          <p>
+            אם התיקייה <code>skills</code> לא קיימת — צור אותה בשם הזה בדיוק, באותיות קטנות.
+            עכשיו העתק לתוכה את התיקייה <code>evidence-and-air</code>.
+          </p>
+        </div>
+      </li>
+
+      <li>
+        <div>
+          <h3>סגור את Claude לגמרי ופתח מחדש</h3>
+          <p>
+            לא מספיק למזער — צריך לסגור את החלון ולפתוח שוב. תוספות נטענות רק בהפעלה.
+            <b>זו הסיבה מספר אחת לכך ש"לא קרה כלום".</b>
+          </p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <b>בדיקה שהכול תקין.</b> בסיום, המבנה צריך להיראות בדיוק כך — קובץ בשם
+      <code>SKILL.md</code> יושב ישירות בתוך <code>evidence-and-air</code>.
+      אם יש לך תיקייה בתוך תיקייה עם אותו שם, הכנסת שכבה מיותרת אחת פנימה מדי:
+<pre>.claude/skills/evidence-and-air/
+├── SKILL.md
+├── GUIDE.md
+├── LICENSE
+├── README.md
+├── presentation-lessons.md
+└── references/
+    ├── style-guide.md
+    ├── venues.md
+    └── evidence-and-air.js</pre>
+    </div>
+  </section>
+
+  <div class="strip"><span>חלק ב · המצגת הראשונה</span><span>מה בדיוק להקליד</span></div>
+
+  <section>
+    <h2>פשוט תבקש, במילים שלך</h2>
+    <p>
+      אין פקודה מיוחדת ואין תחביר לזכור. פתח שיחה חדשה ב‑Claude וכתוב משפט רגיל.
+      ככל שתגיד יותר, כך תצטרך פחות לתקן אחר כך:
+    </p>
+
+    <blockquote class="prompt">
+      תבנה לי מצגת של 20 דקות על אי‑ספיקת לב עם מקטע פליטה שמור, לישיבת מחלקה.
+      <cite>זה כל מה שצריך להקליד</cite>
+    </blockquote>
+
+    <div class="callout">
+      <b>יש לך מאמר, גיידליין או דאטה?</b> גרור אותם לתוך השיחה יחד עם הבקשה.
+      זה השדרוג הכי גדול שאפשר לעשות לתוצאה — Claude יעדיף אותם על כל מקור אחר,
+      וימשוך מהם מספרים וניסוחים במקום לחפש לבד.
+    </div>
+
+    <h2 style="margin-top:2.75rem">או: כבר יש לך מצגת שלא מספיק טובה</h2>
+    <p>
+      זה עובד גם בכיוון ההפוך. אם התחלת מצגת והיא לא ברמה שרצית — גרור את קובץ ה‑<code>.pptx</code>
+      לתוך השיחה וכתוב:
+    </p>
+
+    <blockquote class="prompt">
+      המצגת הזאת לא מספיק טובה. תעבור עליה ותגיד לי מה לא עובד, ואז תשפר.
+      <cite>מסלול השיפור</cite>
+    </blockquote>
+
+    <p style="margin-top:1.25rem">מה שיקרה שונה מבנייה מאפס, ובכוונה:</p>
+
+    <ul class="stages" style="margin-top:1rem">
+      <li class="stage">
+        <span class="who">קודם כול · הוא מסתכל</span>
+        <p>
+          לא רק קורא את הטקסט — הוא מייצר <b>תמונות של השקפים</b> ומסתכל עליהן.
+          רוב הבעיות של "לא ואוו" יושבות בפריסה, לא במילים, ואי אפשר לראות אותן מהטקסט.
+        </p>
+      </li>
+      <li class="stage">
+        <span class="who">אחר כך · שני אבחונים נפרדים</span>
+        <p>
+          מה חלש <b>מקצועית</b> — טענות בלי מקור, מספרים בלי N, נתונים ישנים, גרפים מטעים.
+          ובנפרד: מה חלש <b>גרפית</b> — שקפים עמוסים, פונטים קטנים, שקף בלי שום ויזואל,
+          אין חוט מקשר.
+        </p>
+        <p>
+          הם נפרדים כי הם נכשלים בנפרד. לתקן טיפוגרפיה בשקף שהטענה שבו לא ממוקרת רק גורם
+          לטענה חלשה להיראות בטוחה בעצמה.
+        </p>
+      </li>
+      <li class="stage key">
+        <span class="who">ואז · רשימת ליקויים, לפי מספרי שקפים</span>
+        <p>
+          <b>הוא לא נוגע בכלום עד שתאשר.</b> זו העבודה שלך — הוא לא ימחק תוכן ולא ישנה טענות
+          על דעת עצמו. אם משהו נראה לו שגוי הוא ישאל, כי ייתכן שאתה יודע משהו שהחיפוש לא מצא.
+        </p>
+        <p>מה שכבר טוב — יישאר. הוא אמור להגיד לך במפורש אילו שקפים עובדים ולהשאיר אותם בשקט.</p>
+      </li>
+    </ul>
+  </section>
+
+  <div class="strip"><span>חלק ג · מה יקרה עכשיו</span><span>ארבעה רגעים</span></div>
+
+  <section>
+    <h2>השיחה, שלב אחרי שלב</h2>
+    <p>
+      Claude לא יבנה מיד. הוא יעבור איתך ארבעה רגעים. רק באחד מהם באמת צריך אותך —
+      וזה מסומן.
+    </p>
+
+    <ul class="stages">
+      <li class="stage">
+        <span class="who">רגע ראשון · הוא שואל</span>
+        <p>
+          כמה שאלות: מי הקהל, כמה זמן, איזה טון, האם צריך שקף גילוי נאות, וכמה זה חשוב.
+          <b>ענה בכנות על שאלת החשיבות.</b> אם תגיד שהכול קריטי, הוא ישקיע במחקר גם
+          כשלא צריך ותחכה יותר. אם זו הרצאה אמיתית מול קהל מקצועי — תגיד את זה.
+        </p>
+      </li>
+
+      <li class="stage">
+        <span class="who">רגע שני · הוא מחפש</span>
+        <p>
+          הוא יקרא ספרות ויחזור עם סיכום קצר: מה מבוסס, מה חדש, מה שנוי במחלוקת.
+          <b>אין מה לעשות כאן</b> — אלא אם משהו נראה לך חסר או לא מדויק. אם כן, תגיד עכשיו.
+        </p>
+      </li>
+
+      <li class="stage key">
+        <span class="who">רגע שלישי · כאן צריך אותך</span>
+        <p>
+          הוא יראה לך <b>שלד</b> — רשימה של כל שקף: מה הכותרת, מה הרעיון, איזה גרף,
+          כמה זמן. עוד לא נבנה שום דבר.
+        </p>
+        <p>
+          <b>אל תגיד "מעולה, תמשיך" מהר מדי.</b> תקרא באמת. לשנות סדר, להוריד שקף או להחליף
+          דגש כאן זה משפט אחד. אחרי שהקובץ נבנה זה עולה פי עשרה. זה הרגע היחיד שקובע אם
+          המצגת תצא טובה או מצוינת.
+        </p>
+      </li>
+
+      <li class="stage">
+        <span class="who">רגע רביעי · הוא בונה</span>
+        <p>
+          נוצר קובץ <code>.pptx</code> רגיל, נפתח בפאוור‑פוינט או ב‑Keynote.
+          מתחת לכל שקף כבר כתובות הערות המרצה — מה להגיד, במילים מדוברות, מתוזמן לאורך השקף.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <div class="strip"><span>חלק ד · תוצאה מצוינת בכל פעם</span><span>חמישה הרגלים</span></div>
+
+  <section>
+    <h2>מה שמפריד בין טוב למצוין</h2>
+    <p>
+      המערכת טובה מהשקף הראשון, אבל היא נועדה להשתפר אצלך ספציפית. חמישה דברים,
+      לפי סדר החשיבות:
+    </p>
+
+    <ul class="habits">
+      <li>
+        <b>אל תדלג על השלד.</b>
+        <p>אם תזכור דבר אחד מהעמוד הזה — שיהיה זה.</p>
+      </li>
+      <li>
+        <b>מלא את קובץ המקומות פעם אחת.</b>
+        <p>
+          בתוך <code>references/venues.md</code> יש חמישה סוגי הרצאה עם סוגריים מרובעים
+          למילוי — ישיבת מחלקה, הרצאה אקדמית, כנס, ז'ורנל קלאב, עדכון פנימי. תחליף אותם בשמות
+          האמיתיים שלך. מרגע זה השאלות בהתחלה מתקצרות מתשע לאחת, בכל מצגת מכאן והלאה.
+        </p>
+      </li>
+      <li>
+        <b>תן לו את המקורות שלך.</b>
+        <p>מאמר מצורף תמיד עדיף על חיפוש עצמאי, וגם מבטיח שהמצגת והמאמר שלך מספרים אותו סיפור.</p>
+      </li>
+      <li>
+        <b>ענה לו בסוף כשהוא שואל מה לשפר.</b>
+        <p>
+          יש קובץ בשם <code>presentation-lessons.md</code> שהוא הזיכרון של המערכת. כל תיקון
+          שתיתן נרשם שם ולא יחזור. אחרי שלוש‑ארבע מצגות הוא כבר יודע את הקצב שלך, את הטון
+          ואת ההעדפות — ואתה מתקן פחות ופחות.
+        </p>
+      </li>
+      <li>
+        <b>תגיד לו כשמשהו לא יפה.</b>
+        <p>"השקף הזה עמוס", "המספר לא בולט מספיק" — זה עובד, והוא יזכור את זה גם בפעם הבאה.</p>
+      </li>
+    </ul>
+  </section>
+
+  <div class="strip"><span>חלק ה · כשמשהו לא עובד</span><span>שלוש תקלות</span></div>
+
+  <section>
+    <h2>פתרון תקלות</h2>
+    <dl>
+      <dt>ביקשתי מצגת ולא קרה כלום מיוחד</dt>
+      <dd>
+        התוספת לא נטענה. כמעט תמיד: לא סגרת ופתחת את Claude אחרי ההעתקה, או שהתיקייה
+        לא במקום הנכון. חזור לשלב 3 ווודא ש‑<code>SKILL.md</code> יושב ישירות בתוך
+        <code>evidence-and-air</code>, בלי תיקייה נוספת באמצע.
+      </dd>
+
+      <dt>הוא בנה מצגת אבל היא לא נראית כמו שמובטח כאן</dt>
+      <dd>
+        כנראה נטענה תוספת המצגות הרגילה של Claude במקום זו. תכתוב לו במפורש:
+        <em>"תשתמש בסקיל evidence-and-air"</em>, והוא יעבור.
+      </dd>
+
+      <dt>הופיעה שגיאה על <code>pptxgenjs</code></dt>
+      <dd>
+        זה הרכיב שכותב את קובץ הפאוור‑פוינט, והוא כבר מותקן ברוב המקרים. אם לא —
+        תבקש מ‑Claude להריץ <code>npm install pptxgenjs</code>. הוא יידע לעשות את זה לבד.
+      </dd>
+    </dl>
+  </section>
+
+  <div class="strip"><span>קרדיט</span><span>CC BY 4.0</span></div>
+
+  <footer>
+    <p>
+      Evidence &amp; Air נבנה על ידי <strong>ד"ר עומרי ברוור</strong> —
+      <a href="https://github.com/braveromri">github.com/braveromri</a>.
+      משוחרר תחת רישיון <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>:
+      מותר להשתמש, לשנות ולהפיץ, כולל מסחרית, בתנאי שניתן קרדיט בהפצה של המערכת עצמה.
+    </p>
+    <p style="margin-top:.8rem">
+      <strong>המצגות שתבנה הן שלך.</strong> הן לא נושאות שום מיתוג, שורת קרדיט או מטא‑דאטה
+      של אף אחד אחר. זה מכוון — הקרדיט נוגע להפצת המערכת, לא לתוצרים שלה.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

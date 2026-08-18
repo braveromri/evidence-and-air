@@ -1,96 +1,89 @@
 # Evidence &amp; Air
 
-**מצגות מדעיות ברמת כנס — תוספת ל‑Claude.**
+**Congress-standard scientific and clinical presentations — a skill for Claude.**
 
-זו לא תבנית עיצוב. זו מערכת שנבנתה ותוקנה על מצגות אמיתיות, והיא לא עוברת משלב לשלב
-לפני שהקודם עומד בתקן.
+### 📖 [המדריך המלא בעברית → braveromri.github.io/evidence-and-air](https://braveromri.github.io/evidence-and-air/)
 
-**היא עובדת בשני כיוונים:**
+---
 
-| מה יש לך | מה יקרה |
+Not a design template. A system that was built and corrected on real decks, and that does not
+move from one stage to the next until the current one meets the standard.
+
+**It works in both directions:**
+
+| You have | What happens |
 |---|---|
-| **נושא, בלי שקפים** | מראיינת אותך, בונה מפת ראיות מהספרות, מציגה שלד לאישור, ואז בונה `.pptx` עם הערות מרצה מתוזמנות |
-| **מצגת קיימת שלא מספיק טובה** | קוראת אותה *ומסתכלת* עליה, מאבחנת בנפרד מה חלש בתוכן ומה חלש בעיצוב, מגישה רשימת ליקויים לאישור — ורק אז משפרת |
+| **A topic, no slides** | It interviews you, builds an evidence map from primary literature, shows a slide-by-slide skeleton for sign-off, then builds a `.pptx` with speaker notes timed to your speaking pace |
+| **An existing deck that isn't good enough** | It reads the deck *and looks at it*, diagnoses the evidence and the design as two separate problems, hands you a per-slide punch-list — and only then improves anything |
 
-הכיוון השני הוא לא נספח. מצגת ש"לא ואוו" כמעט תמיד נכשלת בשני צירים שונים — הראיות והעיצוב —
-והמערכת מאבחנת אותם בנפרד, כי לתקן טיפוגרפיה בשקף שהטענה שבו לא ממוקרת רק גורמת לטענה חלשה
-להיראות בטוחה בעצמה.
+The second track is not an afterthought. A deck that "isn't wow" almost always fails on two
+independent axes, and they need separate diagnoses: fixing the typography on a slide whose
+claim is unsourced only makes a weak claim look confident.
 
-### 📖 לא מכיר AI או Claude? → **[התחל מהמדריך המלא](GUIDE.md)**
+## Install
 
-המדריך מניח אפס ידע ולוקח אותך צעד‑צעד מהתקנה ועד מצגת מצוינת.
+1. **Code** → **Download ZIP**, and extract.
+2. Rename the folder from `evidence-and-air-main` to **`evidence-and-air`**.
+3. Move it into `%USERPROFILE%\.claude\skills\` on Windows, or `~/.claude/skills/` on macOS.
+4. Quit Claude completely and reopen it.
 
----
+Then just ask: *"Build me a 20-minute talk on [topic] for [audience]."*
+Or share a `.pptx` and ask for it to be improved.
 
-## התקנה מהירה
+Nothing to install, no connectors to configure, no API keys.
 
-למי שכבר מכיר את Claude:
+## The look
 
-1. **Code** ← **Download ZIP**, ופרק.
-2. שנה את שם התיקייה מ‑`evidence-and-air-main` ל‑**`evidence-and-air`**.
-3. העתק אותה אל `%USERPROFILE%\.claude\skills\` בווינדוס, או `~/.claude/skills/` במאק.
-4. סגור את Claude לגמרי ופתח מחדש.
+The style is called "Evidence & Air". Full spec in [`references/style-guide.md`](references/style-guide.md).
 
-אז פשוט בקש: *"תבנה לי מצגת של 20 דקות על [נושא], ל[קהל]."*
-
-אין חבילות להתקין, אין connectors להגדיר, אין מפתחות API.
-
----
-
-## מה שמייצר את המראה
-
-הסגנון נקרא "Evidence & Air". מפרט מלא ב‑[`references/style-guide.md`](references/style-guide.md).
-
-| | | |
+| Token | Hex | Role |
 |---|---|---|
-| **Ink** | `13192B` | רקע כהה — פתיחה, רגעי נרטיב, סיום |
-| **Paper** | `FAFAF8` | רקע בהיר — שקפי נתונים ותוכן |
-| **Ember** | `C75B3E` | צבע ההדגשה **היחיד** |
-| **Steel** | `5B6B85` | תוויות, מבנה משני |
-| **Ash** | `8D9099` | ציטוטים ורצועת הקריאה |
+| **Ink** | `13192B` | Dark ground — hook, narrative beats, close |
+| **Paper** | `FAFAF8` | Light ground — data and content slides |
+| **Ember** | `C75B3E` | The **single** accent |
+| **Steel** | `5B6B85` | Eyebrow labels, secondary structure |
+| **Ash** | `8D9099` | Citations and the readout strip |
 
-**המוטיב:** קו דק אחד בבסיס כל שקף, באותו גובה בדיוק, ומתחתיו טקסט מושתק — N ו‑HR ו‑CI
-בשקפי נתונים, שורת המקור בשקפי נרטיב. זה מה שמחבר את הרקע הכהה והבהיר לקול אחד.
+**The motif:** one thin rule at the same baseline on every slide, with muted small-caps text
+beneath it — N, HR and CI on data slides, the source line on narrative slides. That is what
+fuses the dark and light registers into one voice.
 
-הסגנון ממומש כקוד ב‑[`references/evidence-and-air.js`](references/evidence-and-air.js) —
-לא כתיאור מילולי. המשמעות היא שהמצגת הראשונה שלך *היא* Evidence & Air, ולא פרשנות שלה.
+The style is implemented as code in
+[`references/evidence-and-air.js`](references/evidence-and-air.js), not described in prose.
+Your first deck *is* Evidence & Air rather than an interpretation of it.
 
----
+## What it enforces
 
-## מה שנאכף
+These are enforced, not suggested:
 
-הכללים האלה נאכפים, לא מוצעים:
+- Max 6 words per bullet; max 3–4 bullets per slide
+- Title ≥ 40pt, body ≥ 28pt
+- One idea per slide. One chart **or** one table — never both
+- Every data slide shows N; every effect estimate shows its CI — on the slide, not in the notes
+- Every content slide carries at least one non-text visual
+- No 3D charts, no truncated y-axis, units on every axis
+- Every claim traces to primary literature; anything preliminary or contested is flagged on screen
 
-- מקסימום 6 מילים בבולט, מקסימום 3–4 בולטים בשקף
-- כותרת ≥ 40pt, גוף ≥ 28pt
-- רעיון אחד לשקף. גרף אחד **או** טבלה אחת — לא שניהם
-- כל שקף נתונים מציג N; כל אומדן אפקט מציג רווח בר‑סמך — על השקף, לא בהערות
-- כל שקף תוכן נושא לפחות אלמנט חזותי אחד
-- בלי תלת‑מימד בגרפים, בלי ציר Y קטוע
-- כל טענה עוברת לספרות הראשונית; מה שראשוני או שנוי במחלוקת מסומן ככזה על המסך
+Above all: research at the highest available level every time, and production quality matching
+the field's leading speakers. **"Good but not wow" is a failing grade.**
 
-ומעל הכול: מחקר ברמה הגבוהה ביותר האפשרית בכל פעם, ואיכות הפקה ברמת הדוברים המובילים
-בתחום. **"טוב אבל לא מדהים" הוא ציון נכשל.**
+## Requirements
 
----
+Claude Desktop or Claude Code, installed and signed in. That's it — the bundled `pptx` and
+`presentation-builder` skills ship with the app, and `pptxgenjs` is already present in the
+environment they run in. If a `require` ever fails: `npm install pptxgenjs`.
 
-## דרישות
+Figma and Canva are supported as optional sources for visual assets, but are **off by default
+and not required** — the primitives in `evidence-and-air.js` produce the full style without them.
 
-Claude Desktop או Claude Code, מותקן ומחובר. זהו.
-הסקילים המובנים `pptx` ו‑`presentation-builder` מגיעים עם האפליקציה, ו‑`pptxgenjs` כבר מותקן
-בסביבה שבה הם רצים. אם בכל זאת `require` נכשל: `npm install pptxgenjs`.
+## Credit and licence
 
-Figma ו‑Canva נתמכים כאופציה לנכסים חזותיים, אבל **כבויים כברירת מחדל ולא נדרשים** —
-הפרימיטיבים ב‑`evidence-and-air.js` מייצרים את הסגנון המלא בלעדיהם.
+Created by **Dr. Omri Braver** — [github.com/braveromri](https://github.com/braveromri)
 
----
+Released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): use, adapt and
+redistribute freely, including commercially, as long as credit is given when redistributing
+the system itself.
 
-## קרדיט ורישיון
-
-נבנה על ידי **ד"ר עומרי ברוור** — [github.com/braveromri](https://github.com/braveromri)
-
-משוחרר תחת [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): מותר להשתמש, לשנות
-ולהפיץ, כולל מסחרית, בתנאי שניתן קרדיט אם מפיצים את המערכת עצמה הלאה.
-
-**המצגות שתבנה הן שלך.** הן לא נושאות שום מיתוג, שורת קרדיט או מטא‑דאטה של אף אחד אחר —
-זה מכוון, ולא מחדל שצריך "לתקן". הקרדיט נוגע להפצת המערכת, לא לתוצרים שלה.
+**The decks you build are yours.** They carry no branding, no credit line, and no authorship
+metadata belonging to anyone else. That is deliberate, not an oversight — attribution covers
+redistributing the system, never its output.

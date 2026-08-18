@@ -1,3 +1,7 @@
+<div dir="rtl">
+
+> 💡 **הדף המעוצב של המדריך הזה:** [braveromri.github.io/evidence-and-air](https://braveromri.github.io/evidence-and-air/) — קריא יותר, במיוחד בטלפון.
+
 # מדריך מלא — מאפס עד מצגת מצוינת
 
 המדריך הזה מניח שלא התקנת שום דבר ולא השתמשת ב‑Claude מעולם.
@@ -181,3 +185,6 @@ Claude לא יבנה מיד. הוא יעבור איתך ארבעה רגעים. �
 ---
 
 נבנה על ידי **ד"ר עומרי ברוור** — <https://github.com/braveromri> · רישיון CC BY 4.0
+
+
+</div>
