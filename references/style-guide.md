@@ -34,9 +34,21 @@ than one accent colour on screen at a time.
   letter-spaced.
 - **Narrative beats:** Georgia, italic — for the line that should land and breathe. Never more
   than one or two lines.
-- **Big stat numerals:** Calibri 64–80pt, **regular weight, not bold**. Let scale carry the
-  weight.
+- **Big stat numerals:** Calibri at 120–150pt, **regular weight, not bold**. Let scale carry the
+  weight. (The seeded 64–80pt proved too timid on a projector; the primitives use 150.)
 - Never centre body paragraphs. Centre only single-line narrative beats and titles.
+
+### Right-to-left decks
+
+- **Faces:** Arial for everything; Times New Roman for narrative beats. Calibri, Georgia and
+  Trebuchet carry no Hebrew or Arabic glyphs — the viewer's OS would substitute at random.
+- **No italics and no letter-spacing** on Hebrew or Arabic. Slanted Hebrew reads as an error;
+  spaced Hebrew breaks the letterforms. Weight (bold titles) replaces both.
+- **Mirror the grammar, not the data:** eyebrow and readout start at the right, citation sits
+  bottom-left, arrows point right-to-left, the station tracker runs right-to-left. Charts, ECG
+  traces and monitor panels stay physically left-to-right, as they are everywhere in medicine.
+- Hebrew quotation marks are ״…״. Statistics stay in Latin digits and English abbreviations
+  (HR, CI, N) — clinicians read them that way in any language.
 
 ## The motif — the readout strip
 
@@ -67,6 +79,16 @@ element most responsible for the deck reading as designed rather than assembled.
 | Hook, close | Ink + Georgia italic — land one feeling |
 | Data, evidence | Paper + large Calibri numeral + readout strip with full statistical context |
 | Transitions, the "so what" | Ink + Georgia italic — same as hook, used once or twice per deck so it keeps its force |
+| A clinical case moment | Ink + `monitor` — vitals, trace and fluid bar that Morph between appearances |
+| Backup detail cut from the main talk | After the close, behind an Ink "backup" divider — relaxed word cap, never in the timing |
+
+## Motion
+
+Morph (PowerPoint 2019+/365, Mac and Windows) on every slide, 0.9s. It is not decoration: the
+readout strip and the station dots stay put while content changes, which makes the deck feel
+like one continuous object, and on `monitor` slides it animates the physiology itself. No
+fly-ins, no builds, no spinning — Morph and nothing else. Keynote and Google Slides fall back to
+a fade; the deck must read fully without motion.
 
 ## Visual-asset standard
 

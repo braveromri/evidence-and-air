@@ -1,6 +1,6 @@
 ---
 name: evidence-and-air
-description: Build or upgrade scientific and clinical presentations to congress standard, in the "Evidence & Air" visual style. Use for BOTH entry points — (1) a new deck, talk, lecture, grand rounds, journal club, congress presentation or .pptx from scratch, and (2) an existing or half-finished deck that is not good enough: "make this better", "this isn't wow", "polish my slides", "redesign this deck", "review my presentation", "it looks amateurish", "upgrade these slides", or any .pptx the user shares wanting it improved. Diagnoses evidence quality and visual design separately, runs blocking quality gates, and builds with pptxgenjs.
+description: Build or upgrade scientific and clinical presentations to congress standard, in the "Evidence & Air" visual style. Use for BOTH entry points — (1) a new deck, talk, lecture, grand rounds, journal club, congress presentation or .pptx from scratch, and (2) an existing or half-finished deck that is not good enough: "make this better", "this isn't wow", "polish my slides", "redesign this deck", "review my presentation", "it looks amateurish", "upgrade these slides", or any .pptx the user shares wanting it improved. Works in English and in right-to-left languages (Hebrew, Arabic) with correct bidi. Diagnoses evidence quality and visual design separately, verifies every number against the primary source, builds with pptxgenjs through primitives whose save step audits the file and refuses to ship a dense or broken deck, and renders every slide to an image for review before delivery.
 ---
 
 # Evidence & Air — Scientific Presentation Builder
@@ -59,6 +59,11 @@ a recorded lesson.
 
 Also read `references/style-guide.md` and `references/venues.md` now, not later.
 
+On a machine where this skill has not built a deck before, run `node references/selftest.js
+<outDir>` once. It builds every primitive in English and in Hebrew through the strict audit; a
+FAIL here is an environment problem (missing pptxgenjs, jszip, or a changed pptxgenjs version)
+that would otherwise surface halfway through a real deck.
+
 ## Stage 1 — Intake
 
 Check `references/venues.md` first. If the request matches a preset, collapse intake to one
@@ -71,9 +76,14 @@ confirmation line: state the assumed preset and ask only what is genuinely still
 4. **Slide count** — recommend from duration if they are unsure.
 5. **Tone** — authoritative, didactic, urgent, exploratory?
 6. **Non-negotiables** — data, messages, or acknowledgements that must appear.
-7. **Language** — and whether a second-language version will be needed later.
+7. **Language** — and whether a second-language version will be needed later. Hebrew or
+   Arabic means an RTL deck: `EA.deck({ rtl: true })`, and the RTL rules in Stage 5 apply.
 8. **Disclosures** — funding, COI, affiliations. Most congresses mandate a slide. Ask; never assume none.
 9. **Stakes and rigor** — this sets the research depth for everything downstream.
+10. **What will it be presented in?** PowerPoint (Mac or Windows, 2019 or later) gets Morph
+    transitions, the single biggest "wow" lever in the system. Keynote and Google Slides drop
+    Morph on import, so the deck must read correctly without motion. Ask even when a venue
+    preset matches: it is the one answer a preset cannot know.
 
 Then ask once: *"Do you have source material — papers, guidelines, data, a manuscript, slides
 from a past talk? I'll treat it as the primary evidence base."* A related manuscript is
@@ -96,6 +106,36 @@ Three layers, in order:
 
 Reserve two-source cross-checking for claims that are central, surprising, or likely to be
 challenged. A single authoritative source is enough for contextual figures.
+
+**Check every on-screen number against the abstract itself, not against memory or a secondary
+summary.** PubMed's E-utilities need no key, no login and no connector, and they work from any
+shell (the PubMed web page itself often returns a cookie wall to tools):
+
+```bash
+# find PMIDs
+curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmax=5&term=Lerman+ejection+fraction+noncardiac+surgery+mortality"
+# read the abstract, with N, effect estimate and CI
+curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=30747965&rettype=abstract&retmode=text"
+# AMA-ready metadata: authors, journal, volume, pages, DOI
+curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=30747965&rettype=medline&retmode=text"
+```
+
+Record for each number: which group it describes (crude or adjusted, which subgroup), N, and
+the CI. Typical defects this catches: a crude rate presented as adjusted, a CI dropped, a
+subgroup percentage attached to the whole cohort, "doubled" in the notes for an OR of 1.46.
+
+**Also search the last 12 months for anything that contradicts the deck's advice.** A
+perioperative "stop drug X three days before" rule can be challenged by a study published last
+month. Such a finding goes on screen, flagged as contested, with its design stated — never
+silently adopted, never silently omitted.
+
+**Optional — NotebookLM for source-grounded checking.** When the user supplies a stack of PDFs,
+NotebookLM answers "does source X actually say Y?" with a citation into the PDF. It is off by
+default and never required. It needs the unofficial `notebooklm-py` package and a Google login
+that **the user performs themselves** in their own browser (`notebooklm login`); never enter
+credentials for them. If it is installed and authenticated: create a notebook, add the PDFs,
+ask one question per central claim, and record the cited passage in the evidence map. If it is
+not, or login fails once, continue with E-utilities — nothing is lost.
 
 Summarise the landscape for the user **once**: what is settled, what is recent, what is
 contested, and what would make the strongest hook. Then proceed on your own judgment — every
@@ -177,23 +217,121 @@ as much.
 
 Go straight to building once the skeleton is approved; do not ask again.
 
-Use `references/evidence-and-air.js`, which implements the style as pptxgenjs primitives —
-`inkBeat`, `paperStat`, `paperContent`, `titleSlide`, `referencesSlide`. Using them is what
-makes the deck *be* Evidence & Air rather than an approximation of it. Read the file's header
-comment for the API.
+### Build only through the primitives — never hand-roll a slide
+
+Use `references/evidence-and-air.js`. Read its header comment for the API. **Every slide in the
+deck is one primitive call.** Custom graphics go *inside* a primitive's `visual` or `overlay`
+callback, drawn with `EA.text` / `EA.box` / `EA.ecg`, so they inherit the eyebrow, the readout
+strip, the RTL mirroring and the audit.
+
+This is the rule that failed in practice. A deck built "with this skill" that bypassed the
+primitives came back with 9.5pt text, up to 236 words on a slide, 43 elements in a frame, notes
+of 13 words, and Hebrew punctuation in the wrong place — a document pasted onto slides. If a
+layout seems to need hand-rolled `addText` calls, the content is too dense for one slide: split
+it.
+
+**Choose the primitive from the content, not from habit:**
+
+| The slide's job | Primitive | Notes |
+|---|---|---|
+| Hook, transition, "so what", close | `inkBeat` | One line, ≤14 words. Silence under it |
+| One number that matters | `paperStat` | Numeral at 150pt; N and CI in the readout |
+| Two numbers: before/after, exposed/unexposed | `paperShift` | Never a two-bar chart |
+| Two options with different trade-offs | `paperCompare` | Never two columns of bullets |
+| 3–5 parallel targets, checks, takeaways | `tiles` | Tile value ≤3 words at 5 tiles |
+| An order of operations, a causal chain | `steps` | `ladder` up to 7, `chain` up to 5 |
+| A dose-response, a trend, ≥3 categories | `chartSlide` | Native chart. `takeaway` = the answer |
+| A clinical case moment | `monitor` | See "The case monitor" below |
+| Bullets + one custom graphic | `paperContent` | ≤3 bullets; `visual` is mandatory |
+
+**The case monitor — the strongest single device in the system.** When the talk follows a
+patient, show the case moments as `monitor` slides with the *same vitals keys* on every one
+(`bp`, `hr`, `spo2`, `map`) and a running `fluids` bar. With Morph on, PowerPoint animates the
+numbers changing, the trace turning from sinus to AF, the bar filling and turning Ember — the
+patient deteriorates in front of the room. This is what "wow" means for a clinical audience: not
+decoration, the physiology moving. Give the monitor 2–4 appearances across the talk, never one.
+
+**Station tracker.** Pass `station: [n, total]` on every slide of a structured talk. The dots
+are Morph-stable, so moving between sections reads as travel.
+
+### Right-to-left decks (Hebrew, Arabic)
+
+`EA.deck({ rtl: true, lang: 'he-IL' })` mirrors every layout, switches to Arial + Times New
+Roman (the only faces that carry Hebrew on both Mac and Windows), removes letter-spacing and
+italics, and **repairs bidi in the written XML** at `save()` — slides and speaker notes. Do not
+work around it with hand-inserted RLM marks. Measured behaviour behind that repair (PowerPoint
+365, 2026): a Hebrew run tagged `en-US` puts punctuation on the wrong side; tagged `he-IL` it
+reverses English letters; pptxgenjs drops `rtl="1"` when text is passed as runs. Content rules
+that remain:
+
+- Hebrew quotation marks are ״…״ (gershayim), never ASCII `"` — ASCII quotes are bidi-neutral
+  and land on the wrong side.
+- Do not end a Hebrew line with an English parenthetical — write `· 95% CI 120–830`, not
+  `(95% CI 120–830)`.
+- Long Hebrew words break mid-word in narrow boxes. In a 5-step chain or 5 tiles, prefer two
+  short words to one long technical term; keep the term in the sub-line or the notes.
+- Charts keep an LTR x-axis in every language. Chart category labels are not bidi-repaired:
+  keep them pure Hebrew or pure English, never mixed ("≥3 ימים" breaks; "שלושה ומעלה" does not).
+
+### Speaker notes — a script, not cues
 
 **This is where the spoken narrative gets written, once.** For each slide compose complete,
 word-for-word speaker notes from its key message and the evidence map: first person,
 conversational, confident, naming the evidence where it strengthens credibility ("this is from
 a trial of just over 8,000 patients, published last year"), sized to the slide's time budget at
-~110–130 wpm. Notes go in `slide.addNotes()`, never in a text box.
+~110–130 wpm. Stage directions go in square brackets on their own line — `[pause; wait for
+hands]`, `[point at the red curve]`. Say the limitation of each study out loud in the notes,
+in one sentence. One line of script per paragraph (`\n`); `save()` turns each into its own
+paragraph so Presenter View stays readable. Notes go in the `notes` option, never in a text box.
+A slide with under 40 words of notes fails the audit: "Stop 20 seconds here" is a cue for the
+presenter's memory, not something they can read aloud.
 
-After writing the file, validate it — the `pptx` skill's `scripts/office/validate.py` reports
-the slide-XML and chart defects PowerPoint silently refuses. Fix them in the generator, not by
-hand-editing packed XML.
+### Save, and let the audit block you
 
-**Gate G5 — Build.** Total notes ≤ 130 × duration_in_minutes words. Fonts and sizes match spec.
-Every planned visual is actually embedded — assets drop silently. Validator clean.
+```js
+await EA.save(pres, 'Talk.pptx', { morph: true, strict: true });
+```
+
+`save()` adds Morph transitions (with a fade fallback), repairs RTL, then **reads the written
+file back and audits it**: text below 12pt, more than 40 words on screen (90 on appendix
+slides), more than 22 text boxes, Hebrew paragraphs without RTL, notes under 40 words, total
+notes over 130 × minutes, a missing readout, malformed XML, and invalid chart line dashes. Any
+issue writes `Talk.FAILED.pptx` and throws. **Fix the content and rebuild. Never pass
+`strict: false` to ship** — the audit exists because warnings were ignored.
+
+Two pptxgenjs faults it catches that corrupt the whole file: a bare `&` produced by text
+processing, and `lineDash` passed as an array on a scatter chart (written as one invalid value).
+
+**Gate G5 — Build.** `save()` passes in strict mode. The file opens in PowerPoint. Every planned
+visual is actually embedded — assets drop silently.
+
+## Stage 5.5 — Render every slide and look at it
+
+Binding, and not replaceable by the audit: the audit counts, it does not see. Render every slide
+to an image at ≥1600px wide and view them — as a grid for rhythm, then individually for defects.
+
+- **Windows (PowerPoint installed):**
+  ```powershell
+  $pp = New-Object -ComObject PowerPoint.Application
+  $p = $pp.Presentations.Open("C:\short\path\Talk.pptx", $true, $false, $false)
+  foreach ($s in $p.Slides) { $s.Export("C:\short\path\r\s$($s.SlideIndex).png", "PNG", 1600, 900) }
+  $p.Close(); $pp.Quit()
+  ```
+  Keep the path short: PowerPoint refuses any path over 255 characters, and agent scratch
+  folders often exceed it.
+- **macOS / Linux:** `soffice --headless --convert-to pdf Talk.pptx`, then
+  `pdftoppm -png -r 110 Talk.pdf r/s`. LibreOffice substitutes fonts and ignores Morph, so trust
+  it for layout and overlap, not for exact line breaks.
+
+Look for, on every slide: text overflowing or colliding (a label running into a value), a number
+or CI split across two lines, a Hebrew word broken mid-word, punctuation on the wrong side, a
+tile whose value runs into its sub-line, an empty half of a frame, a chart whose colours vary
+per bar for no reason (pptxgenjs colours each point of a single series differently — pass
+`chartColors` per point). Fix in the generator, rebuild, re-render the changed slides. Expect
+two to three rounds; the first render always has defects.
+
+**Gate G5.5.** Every slide has been viewed after the last rebuild. No defect from the list above
+remains.
 
 ## Stage 6 — Quality gate
 
@@ -211,6 +349,14 @@ far more likely to catch what the builder rationalised away. Check every item:
 - [ ] Anything preliminary or contested is flagged on screen
 - [ ] The readout strip sits at the same baseline on every single slide
 - [ ] Tone and terminology are consistent throughout
+- [ ] Every on-screen number was checked against its abstract (Stage 2), including which
+      subgroup and whether crude or adjusted
+- [ ] A search of the last 12 months found nothing contradicting the advice — or the
+      contradiction is on screen, flagged as contested
+- [ ] The notes are a readable script: every slide ≥40 words, limitations said aloud
+- [ ] `save()` passed in strict mode, and every slide was viewed after the final rebuild
+- [ ] If there is a case, it appears on `monitor` slides that Morph between each other
+- [ ] Backup slides after the close hold the detail that was cut from the main deck
 
 The punch-list is binding. Fix every item before delivering. The user should never be the one
 to catch these.
@@ -246,6 +392,24 @@ Track A: the lessons file and the style guide apply identically.
 
 An audit written from the text alone will miss every layout problem, which is usually where
 "not wow" actually lives. Do not skip the thumbnails.
+
+Then measure it — the same audit `save()` runs, pointed at their file:
+
+```bash
+node references/evidence-and-air.js audit their-deck.pptx 20     # 20 = talk minutes
+```
+
+It prints a per-slide table (smallest font, words on screen, text boxes, Hebrew paragraphs
+missing RTL, words of notes) and every rule the deck breaks. Quote those numbers in the
+punch-list: "slide 11: 214 words on screen, 9.5pt text, 27 text boxes" is a finding the user
+can check; "the slides are dense" is not. If there is no pptxgenjs on the machine, run it where
+the `pptx` skill runs (pptxgenjs and jszip are preinstalled there).
+
+**Dense but good is the common case.** A deck can be clinically excellent and still fail every
+presentation rule — the author wrote the talk onto the slides. Then the verdict is Re-skin
+*plus split*: keep every clinical point, move depth to the notes and to backup slides after the
+close, and expect the slide count to rise (15 dense slides typically become 20–24 main slides
+plus 4–5 backup). Ask the user once whether to split with backup or to cut to the time slot.
 
 Then score it on the two axes **separately**, because they fail independently and the user
 experiences them as one vague dissatisfaction. Report per-slide, naming slide numbers.
@@ -313,22 +477,30 @@ Either way, **preserve what was already good.** If a slide already works, say so
 alone. An upgrade that rewrites everything tells the user their judgment was worthless, and it
 is usually also wrong.
 
-**Then rejoin Track A at Stage 5** for the build and the speaker notes, Stage 6 for the quality
-gate, and Stage 7 for the lessons entry. Note in that entry which axis the deck actually failed
+**Then rejoin Track A at Stage 5** for the build and the speaker notes, Stage 5.5 for the render
+review, Stage 6 for the quality gate, and Stage 7 for the lessons entry. If the original notes
+are cues ("pause here", "two minutes max"), keep their intent as bracketed stage directions and
+write the spoken script around them. Hand the user a short change log with the deck: what moved
+to backup, which numbers were corrected and against which source, and any new evidence added. Note in that entry which axis the deck actually failed
 on — over several decks this reveals whether this user's weak spot is evidence or design, and
 Stage 1 can pre-empt it.
 
 ---
 
-## Optional — parallel visual assets
+## Optional — other tools, when they are actually there
 
-If Figma or Canva MCP connectors are configured, a Stage 4.5 can dispatch one subagent per
-slide needing a custom diagram, all in a single message, briefed with the slide's key message,
-the exact palette hex codes, and target dimensions at 2x.
+None of these is needed; the primitives and E-utilities produce the full result on their own.
+Check that a tool is installed and authenticated **before** planning around it, try it once,
+and fall back without ceremony if it fails.
 
-**This is off by default and requires no setup to skip.** The pptxgenjs primitives in
-`references/evidence-and-air.js` produce the full style with no connector at all. Turn this on
-only after the connectors are verified working — never let one stuck visual block a deck.
+| Tool | What it adds | When to use it |
+|---|---|---|
+| NotebookLM (`notebooklm-py`) | Answers about the user's own PDFs with a citation into the passage | User supplied ≥3 papers; central claims need a quoted source. The user logs in themselves |
+| Figma / Canva connectors | A custom diagram or illustration a primitive cannot draw | One subagent per diagram, briefed with the key message, the palette hex codes, 2x size. Insert the result as an image inside a primitive's `visual` |
+| Image generation | A photographic or anatomical hero image | Only for a hook or divider, never for data; check the account has credits first |
+
+Never let one stuck tool block a deck. A missing icon package is handled the same way:
+`EA.icon()` returns null and the slide builds without the icon.
 
 ## Guiding principles
 

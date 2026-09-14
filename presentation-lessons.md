@@ -63,3 +63,29 @@ These were each learned by shipping a slide that did not work. Do not rediscover
 ---
 
 <!-- New entries below. Format: ## YYYY-MM-DD — deck name, then a few durable one-line rules. -->
+
+## 2026-09-13 — "HFpEF בחדר הניתוח" (Hebrew, anaesthesia department meeting, 20 min) — Track B
+
+A deck built by another user of this skill, upgraded. It failed on **design only**; the
+clinical content was strong. Durable rules:
+
+- **A skill that only warns gets ignored.** The builder bypassed the primitives and hand-rolled
+  every slide: 9.5pt text, 110–236 words per slide, notes of 13–37 words. The fix was an audit
+  that reads the *written file* and refuses to save — not another paragraph of rules.
+- **Dense-but-good decks need splitting, not cutting.** 15 slides became 23 main + 5 backup with
+  no clinical point lost. The case thread (one patient, five stations) was the author's best
+  idea; it was kept and made visible with `monitor` slides and a station tracker.
+- **RTL is not a font choice.** Hebrew in pptxgenjs renders with punctuation on the wrong side
+  or English reversed unless runs are split by script — now automatic in `save()`. ASCII quotes
+  and an English parenthetical at the end of a Hebrew line still break; write around them.
+- **Verify numbers against the abstract, even in a good deck.** One figure had lost its CI, one
+  crude rate was described as "doubled" risk (adjusted OR 1.46), and a study published the month
+  before contradicted the deck's "stop SGLT2i 3–4 days before" advice. The new study went on
+  screen flagged as contested, not into the advice.
+- **pptxgenjs file-corrupting faults met in one build:** entity text split into a bare `&`;
+  `lineDash` array on a scatter chart; notes line breaks collapsing into one paragraph. All three
+  are now caught or repaired in `save()`.
+- **Tile values must be 1–3 words at 5 tiles.** Longer values wrapped into the sub-line on every
+  tile slide in the first render. The audit now flags long tile values.
+- **Research tier actually needed:** high (department teaching, practice-changing). Intake
+  assumed the same.

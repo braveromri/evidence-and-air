@@ -22,6 +22,19 @@ The second track is not an afterthought. A deck that "isn't wow" almost always f
 independent axes, and they need separate diagnoses: fixing the typography on a slide whose
 claim is unsourced only makes a weak claim look confident.
 
+## What's new in v2 (September 2026)
+
+- **Real right-to-left.** Hebrew and Arabic decks are mirrored end to end, with punctuation,
+  numbers and embedded English in the right order — on the slides and in the speaker notes.
+- **It refuses to save a dense deck.** Before writing, it audits the file itself: small type,
+  too many words on a slide, speaker notes that are cues instead of a script. Any failure blocks
+  delivery until the content is fixed.
+- **A patient-monitor slide for clinical cases.** Vitals, rhythm and a fluid bar change in front
+  of the audience from slide to slide (PowerPoint Morph).
+- **Every on-screen number is checked against its PubMed abstract**, and it searches the last
+  year for evidence that contradicts the deck's advice.
+- **Every slide is rendered and looked at** before the deck is handed over.
+
 ## Install
 
 > **Prerequisite:** Claude Desktop or Claude Code, installed and **opened at least once** —
