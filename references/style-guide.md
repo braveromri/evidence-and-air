@@ -93,8 +93,13 @@ a fade; the deck must read fully without motion.
 ## Visual-asset standard
 
 Every content slide — anything that is not a hook, close, or divider — needs at least one
-custom, non-clip-art visual: an icon, an anatomy schematic, a connector arrow, a stat-spotlight
-callout, a diagram. Plain numbers on Paper is never sufficient on its own; the numeral needs a
-graphic anchor beside it.
+visual that carries information: a native chart, a pressure–volume schematic, a case monitor, a
+scored checklist, a data table, a causal chain. Plain numbers on Paper is never sufficient on its
+own; the numeral needs a graphic anchor beside it.
+
+**Generic icon sets do not count.** A pill, a bed, a magnifying glass reads as clip-art to a
+specialist audience and was the first thing flagged as unprofessional in a real deck. Neither
+does a chart drawn without data: a curve implies measurement, so a teaching schematic says
+"schematic" on screen. See `professional-standard.md` §3.
 
 This is part of the quality bar, not an optional polish step.

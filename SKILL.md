@@ -57,7 +57,11 @@ accumulated corrections and preferences from previous decks. Apply them as defau
 make the user repeat a preference they have already given. A current instruction always beats
 a recorded lesson.
 
-Also read `references/style-guide.md` and `references/venues.md` now, not later.
+Also read `references/style-guide.md`, `references/venues.md` and
+**`references/professional-standard.md`** now, not later. The last one is the bar a
+specialist audience applies — headline register, terminology, no clip-art, no invented curves,
+guideline class on every recommendation, safety review of clinical sequences. A deck can pass
+every density and design check and still fail it.
 
 On a machine where this skill has not built a deck before, run `node references/selftest.js
 <outDir>` once. It builds every primitive in English and in Hebrew through the strict audit; a
@@ -78,7 +82,9 @@ confirmation line: state the assumed preset and ask only what is genuinely still
 6. **Non-negotiables** — data, messages, or acknowledgements that must appear.
 7. **Language** — and whether a second-language version will be needed later. Hebrew or
    Arabic means an RTL deck: `EA.deck({ rtl: true })`, and the RTL rules in Stage 5 apply.
-8. **Disclosures** — funding, COI, affiliations. Most congresses mandate a slide. Ask; never assume none.
+8. **Presenter and disclosures** — name, specialty, institution for the title slide; funding
+   and COI for the disclosure slide. Most congresses mandate one. Ask; never assume none, and
+   never write a presenter's name or "no conflicts" on their behalf.
 9. **Stakes and rigor** — this sets the research depth for everything downstream.
 10. **What will it be presented in?** PowerPoint (Mac or Windows, 2019 or later) gets Morph
     transitions, the single biggest "wow" lever in the system. Keynote and Google Slides drop
@@ -124,6 +130,15 @@ Record for each number: which group it describes (crude or adjusted, which subgr
 the CI. Typical defects this catches: a crude rate presented as adjusted, a CI dropped, a
 subgroup percentage attached to the whole cohort, "doubled" in the notes for an OR of 1.46.
 
+**Guideline currency sweep — mandatory, by name.** Search each major society in the field for
+guidelines, focused updates and consensus pathways published in the last 18 months
+(*"2026 ESC guidelines heart failure"*, *"2024 ACC/AHA perioperative guideline"*,
+*"ACC expert consensus decision pathway HFpEF 2026"*). Record for every recommendation the
+body, year, class and level. Check the release calendar when the talk is near one — ESC late
+August, AHA November, ACC March–April, ADA December–January, ASA October. Definitions move:
+one ESC release removed a whole HF category and redefined HFpEF two weeks before a deck built
+on the old definition was reviewed.
+
 **Also search the last 12 months for anything that contradicts the deck's advice.** A
 perioperative "stop drug X three days before" rule can be challenged by a study published last
 month. Such a finding goes on screen, flagged as contested, with its design stated — never
@@ -167,6 +182,10 @@ yet know" builds more credibility than false confidence.
 **Gate G3 — Narrative.** Hook, build, and close each map to a specific evidence-map entry.
 No claim in the arc is unsupported by G2's output. A stock opener is a failure.
 
+**The hook is a finding, not a slogan.** Force comes from the evidence and from the case, not
+from wordplay. For a specialist audience the narrative voice lives in the spoken notes; what is
+on screen reads like the title of a good paper (`references/professional-standard.md` §1).
+
 ## Stage 4 — Skeleton
 
 Slide-by-slide, for sign-off before any expensive writing happens.
@@ -187,6 +206,14 @@ abbreviations.
 - **Max 3–4 bullets per slide**, ideally 2–3.
 - **Title slides, dividers, and full-image slides carry zero body text.**
 - **Title ≥ 40pt, body ≥ 28pt.** Never smaller.
+- **Every title is a factual assertion on one line** — the finding the slide proves, in the
+  register of a paper. No slogans, no antithesis, no quoted speech.
+- **Clinical terms in the field's own language** — in a Hebrew deck, drug names, parameters and
+  modes stay in English (Norepinephrine, Preload, PEEP), as specialists write them.
+- **Every recommendation carries body, year and class** on the slide; expert opinion is
+  labelled as such.
+- **No generic icons, no invented curves.** A visual carries data or mechanism; a schematic says
+  "schematic" on screen.
 - **One core message per slide.** Two ideas means two slides.
 - **One chart or one table per data slide — never both.**
 - **No full sentences on screen.** The speaker carries the sentences.
@@ -249,7 +276,15 @@ patient, show the case moments as `monitor` slides with the *same vitals keys* o
 (`bp`, `hr`, `spo2`, `map`) and a running `fluids` bar. With Morph on, PowerPoint animates the
 numbers changing, the trace turning from sinus to AF, the bar filling and turning Ember — the
 patient deteriorates in front of the room. This is what "wow" means for a clinical audience: not
-decoration, the physiology moving. Give the monitor 2–4 appearances across the talk, never one.
+decoration, the physiology moving. **Morph only animates between adjacent slides**, so each
+event is a pair: a stable frame immediately followed by the changed frame (pre-induction →
+post-induction; stable at 60 min → crisis at 90 min). A monitor that follows a text slide
+simply appears. Keep the numbers clinically real: MAP consistent with the pressure, fluid totals
+that only rise, AF that looks irregularly irregular.
+
+**Tiles take no icons for a specialist audience.** Generic icon sets read as clip-art. Anchor a
+tile with a `kicker` ("Class I", "01") or with nothing; `EA.icon()` remains for audiences where
+it helps.
 
 **Station tracker.** Pass `station: [n, total]` on every slide of a structured talk. The dots
 are Morph-stable, so moving between sections reads as travel.
@@ -266,6 +301,10 @@ that remain:
 
 - Hebrew quotation marks are ״…״ (gershayim), never ASCII `"` — ASCII quotes are bidi-neutral
   and land on the wrong side.
+- No arrow glyphs (→ ←) in Hebrew text — they flip unpredictably; the audit flags them. Use a
+  colon, a comma or "·". Dates DD/MM/YYYY; no nikud in professional text.
+- Titles wrap earlier when English terms are mixed in: keep a mixed title visibly shorter and
+  confirm on the render that it is one line.
 - Do not end a Hebrew line with an English parenthetical — write `· 95% CI 120–830`, not
   `(95% CI 120–830)`.
 - Long Hebrew words break mid-word in narrow boxes. In a 5-step chain or 5 tiles, prefer two
@@ -357,6 +396,19 @@ far more likely to catch what the builder rationalised away. Check every item:
 - [ ] `save()` passed in strict mode, and every slide was viewed after the final rebuild
 - [ ] If there is a case, it appears on `monitor` slides that Morph between each other
 - [ ] Backup slides after the close hold the detail that was cut from the main deck
+- [ ] **Committee test, slide by slide:** would this specialty's congress programme committee
+      accept this slide as it stands? Read every title aloud — any slogan, pun, quoted speech or
+      informal phrasing fails (`references/professional-standard.md`)
+- [ ] Every guideline cited is the current version (currency sweep done in Stage 2)
+- [ ] Every clinical sequence was reviewed step by step against the case's own vitals — nothing
+      contraindicated at those numbers, zero-cost immediate actions first
+- [ ] No generic icons, no invented quantitative curves; schematics labelled
+- [ ] Presenter details and disclosures come from the user, not from a placeholder
+
+Run the committee test with a fresh reviewer where possible — a subagent briefed as "senior
+[specialty] consultant on the programme committee of [congress]", given the rendered slide
+images and `references/professional-standard.md`, asked for every slide it would send back and
+why.
 
 The punch-list is binding. Fix every item before delivering. The user should never be the one
 to catch these.
@@ -436,6 +488,19 @@ experiences them as one vague dissatisfaction. Report per-slide, naming slide nu
 - Dense layouts where one big number would land harder
 - An opening slide that is a title or agenda rather than a hook
 
+### Axis 3 — Professional register (the specialist's eye)
+
+Run it even when axes 1 and 2 pass — a deck fixed for density and design was still judged
+informal by a specialist. Against `references/professional-standard.md`:
+
+- Titles that are slogans, puns, antitheses or quoted speech instead of stated findings
+- Home-made translations of standard clinical terms; colloquial phrasing on screen
+- Generic icons or clip-art; charts drawn without data
+- Recommendations without body, year and class; expert opinion presented as evidence
+- Guidelines that have been superseded — run the currency sweep before judging content
+- Clinical sequences with a step contraindicated at the case's own numbers
+- Missing presenter details, disclosure slide, or references
+
 **Gate B1.** The audit names specific slides and specific defects. "The design could be
 stronger" is not an audit. Every finding is something a named slide does or fails to do.
 
@@ -498,6 +563,9 @@ and fall back without ceremony if it fails.
 | NotebookLM (`notebooklm-py`) | Answers about the user's own PDFs with a citation into the passage | User supplied ≥3 papers; central claims need a quoted source. The user logs in themselves |
 | Figma / Canva connectors | A custom diagram or illustration a primitive cannot draw | One subagent per diagram, briefed with the key message, the palette hex codes, 2x size. Insert the result as an image inside a primitive's `visual` |
 | Image generation | A photographic or anatomical hero image | Only for a hook or divider, never for data; check the account has credits first |
+| `rtl-hebrew-docs` skill | A Hebrew handout or summary PDF that renders identically everywhere | When the talk needs a printed or emailed companion. For the `.pptx` itself this skill's measured bidi repair supersedes its `rtlMode`-only advice, and its Rubik/Heebo fonts are not installed on most presenting machines |
+| `avoid-ai-writing` / `stop-slop` skills | A pass over English speaker notes for machine-sounding phrasing | After notes are written, before Stage 6. They target English prose; for Hebrew apply `professional-standard.md` §10 |
+| A fresh subagent | The committee test at Stage 6 with eyes that did not build the deck | Always worth it on congress-tier talks |
 
 Never let one stuck tool block a deck. A missing icon package is handled the same way:
 `EA.icon()` returns null and the slide builds without the icon.

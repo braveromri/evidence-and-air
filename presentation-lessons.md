@@ -89,3 +89,30 @@ clinical content was strong. Durable rules:
   tile slide in the first render. The audit now flags long tile values.
 - **Research tier actually needed:** high (department teaching, practice-changing). Intake
   assumed the same.
+
+## 2026-09-14 — same deck, second review: "שכונתי" — the specialist's standard
+
+The v2 rebuild passed every density, design and bidi check and was still judged informal by the
+specialist who commissioned it: "not a student deck — a specialist presenting to specialists".
+The gap was register and clinical currency, not layout. Now codified in
+`references/professional-standard.md` and a third audit axis. Durable rules:
+
+- **Slogans fail an expert room.** Antithesis titles ("the water didn't accumulate, it was
+  pushed"), quoted hallway speech and taglines were the core of the complaint. Titles now state
+  the finding in the register of a paper; rhetoric lives in the notes.
+- **Translate syntax, not terminology.** Hebrew academy terms for Preload/Afterload/atrial kick
+  read as a translated textbook. Drug names, parameters and modes stay in English.
+- **Generic icons are clip-art; a chart without data is a fabrication.** Both were removed.
+- **Guidelines move under a finished deck.** The 2026 ESC HF guidelines (28 Aug 2026) removed
+  HFmrEF, redefined HFpEF as LVEF ≥50% and made SGLT2i + MRA foundational — the deck predated
+  them. A named, dated currency sweep is now mandatory at Stage 2.
+- **Clinical sequences need a safety read against the case's own vitals.** The crisis ladder
+  listed nitroglycerin before the vasopressor at SBP 78 and "stop fluids" seventh; an ACE
+  inhibitor was held where the 2024 ACC/AHA guideline favours continuing GDMT in compensated HF.
+  None of this is visible to a design audit.
+- **Morph needs adjacency.** A deterioration animates only between a stable frame and the
+  changed frame on consecutive slides — added a pre-induction and a 60-minute monitor.
+- **Mixed English–Hebrew titles wrap earlier than pure Hebrew** — four titles collided with
+  content in the render. Keep them short and confirm one line.
+- **Borrowed from `rtl-hebrew-docs`:** no arrow glyphs in RTL text (now an audit error),
+  DD/MM/YYYY, no nikud.

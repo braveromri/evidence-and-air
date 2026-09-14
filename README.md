@@ -34,6 +34,7 @@ claim is unsourced only makes a weak claim look confident.
 - **Every on-screen number is checked against its PubMed abstract**, and it searches the last
   year for evidence that contradicts the deck's advice.
 - **Every slide is rendered and looked at** before the deck is handed over.
+- **A specialist-to-specialist standard** (`references/professional-standard.md`): titles that state findings instead of slogans, clinical terms as clinicians write them, no clip-art or invented curves, guideline body/year/class on every recommendation, a dated guideline-currency sweep, and a safety read of every clinical sequence.
 
 ## Install
 

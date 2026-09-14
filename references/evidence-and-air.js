@@ -86,7 +86,8 @@ const C = {
 // them falls back to whatever the viewer's OS picks. Arial and Times New Roman carry
 // Hebrew and Arabic on every Mac and Windows install — the only safe pair.
 const FONTS_LTR = { sans: 'Calibri', label: 'Trebuchet MS', serif: 'Georgia', italicBeats: true };
-const FONTS_RTL = { sans: 'Arial',   label: 'Arial',        serif: 'Times New Roman', italicBeats: false };
+// Times New Roman Hebrew reads as a 2005 Word document to an Israeli audience — beats stay in Arial.
+const FONTS_RTL = { sans: 'Arial',   label: 'Arial',        serif: 'Arial', italicBeats: false };
 
 const SW = 13.333;   // LAYOUT_WIDE
 const G = {
@@ -222,7 +223,8 @@ function base(pres, o) {
   return slide;
 }
 
-function wordCount(s) { return String(s).trim().split(/\s+/).filter(Boolean).length; }
+// Words only: separators like "·", "—", "→" are not words and must not eat the budget.
+function wordCount(s) { return String(s).trim().split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length; }
 
 function checkBullets(pres, where, bullets, max = 6, maxItems = 4) {
   const S = ea(pres);
@@ -329,7 +331,8 @@ function paperStat(pres, { eyebrow: eb, numeral, label, detail, icon, readout, c
   }
   if (detail) {
     text(pres, slide, [].concat(detail).map((d, i, a) => ({ text: String(d), options: { breakLine: i < a.length - 1 } })), {
-      x: ax, y: icon ? 3.0 : 1.9, w: G.width * 0.34, h: 3.2,
+      // without an icon the Ember rule sits at `ax`: the detail starts clear of it
+      x: icon ? ax : ax + 0.4, y: icon ? 3.0 : 1.9, w: G.width * 0.34 - (icon ? 0 : 0.4), h: 3.2,
       fontSize: 24, color: C.steel, paraSpaceAfter: 14, lineSpacingMultiple: 1.05, role: 'detail',
     });
   }
@@ -430,12 +433,16 @@ function tiles(pres, { eyebrow: eb, title, tiles: items = [], ground = C.paper, 
     const x = G.left + i * (w + gap);
     box(pres, slide, { shape: 'roundRect', x, y: 2.4, w, h: 3.95, rectRadius: 0.1,
       fill: { color: dark ? C.ink2 : C.card }, line: { color: t.hot ? C.ember : (dark ? C.ink2 : C.card), width: t.hot ? 2.25 : 0 } });
+    // Anchor: an icon, a kicker ("01", "Class I"), or nothing — in which case the text moves up.
+    // Generic icon sets read as clip-art to a specialist audience; prefer a kicker or nothing.
+    const up = t.icon || t.kicker ? 0 : -0.55;
     if (t.icon) slide.addImage({ data: t.icon, x: mx(pres, x + 0.3, 0.55), y: 2.65, w: 0.55, h: 0.55 });
-    text(pres, slide, t.head, { x: x + 0.3, y: 3.35, w: w - 0.6, h: 0.45, fontSize: 19, bold: true, color: dark ? C.mist : C.steel, role: 'head' });
+    if (t.kicker) text(pres, slide, t.kicker, { x: x + 0.3, y: 2.62, w: w - 0.6, h: 0.6, fontSize: 26, color: C.ember, role: 'kicker', dir: 'ltr', align: 'right' });
+    text(pres, slide, t.head, { x: x + 0.3, y: 3.35 + up, w: w - 0.6, h: 0.45, fontSize: 19, bold: true, color: dark ? C.mist : C.steel, role: 'head', dir: t.headDir });
     // value gets a fixed band and the sub is anchored to the tile bottom, so a wrapped value never runs into it
     const vpt = n >= 5 ? 24 : n === 4 ? 28 : 32;
     if (wordCount(t.value) > (n >= 5 ? 3 : 4)) S.issues.push(`tiles "${title}": tile value "${t.value}" too long for ${n} tiles`);
-    text(pres, slide, t.value, { x: x + 0.3, y: 3.85, w: w - 0.6, h: 1.55, fontSize: vpt, bold: S.rtl,
+    text(pres, slide, t.value, { x: x + 0.3, y: 3.85 + up, w: w - 0.6, h: 1.55, fontSize: vpt, bold: S.rtl,
       color: t.hot ? C.ember : (dark ? C.ivory : C.ink), role: 'value', dir: t.dir });
     if (t.sub) text(pres, slide, t.sub, { x: x + 0.3, y: 5.45, w: w - 0.6, h: 0.75, fontSize: 17, valign: 'bottom', color: dark ? C.mist : C.steel, role: 'sub', dir: t.subDir });
   });
@@ -524,7 +531,8 @@ function chartSlide(pres, { eyebrow: eb, title, type = 'bar', data, chartOptions
 function ecg(pres, slide, { x, y, w, h, rhythm = 'sinus', beats = 6, color = C.ivory, width = 2, name }) {
   const pts = [];
   const mid = h * 0.62;
-  const seed = [0.9, 0.55, 1.15, 0.7, 1.3, 0.6, 1.0, 0.5, 1.2];
+  // AF must look irregularly irregular to a clinician: wide RR variation, no repeating pattern
+  const seed = [0.55, 1.35, 0.7, 1.05, 0.5, 1.5, 0.8, 0.62, 1.2, 0.9, 0.48, 1.3];
   const rr = w / beats;
   const clampY = (v) => Math.max(0, Math.min(h, v));
   pts.push({ x: 0, y: mid, moveTo: true });
@@ -712,7 +720,7 @@ async function auditFile(fileOrBuffer, { minutes, appendixFrom } = {}) {
     const k = +n.match(/\d+/)[0];
     const xml = await zip.file(n).async('string');
     const shapes = xml.split(/<p:sp>|<p:sp /).slice(1);
-    let words = 0, boxes = 0, minPt = 999, ltrRtlScript = 0, isAppendix = !!(appendixFrom && k >= appendixFrom);
+    let words = 0, boxes = 0, minPt = 999, ltrRtlScript = 0, arrows = 0, isAppendix = !!(appendixFrom && k >= appendixFrom);
     for (const sp of shapes) {
       const name = (sp.match(/<p:cNvPr[^>]*name="([^"]*)"/) || [])[1] || '';
       const paras = sp.match(/<a:p>[\s\S]*?<\/a:p>/g) || [];
@@ -725,8 +733,10 @@ async function auditFile(fileOrBuffer, { minutes, appendixFrom } = {}) {
       paras.forEach((p) => {
         const t = (p.match(/<a:t>[^<]*<\/a:t>/g) || []).join('');
         if (HEB_OR_ARABIC.test(t) && !/rtl="1"/.test(p)) ltrRtlScript++;
+        if (HEB_OR_ARABIC.test(t) && /[←-⇿]/.test(t)) arrows++;
       });
     }
+    if (arrows) issues.push(`slide ${k}: arrow glyph in Hebrew/Arabic text — arrows flip unpredictably in RTL; use a colon, a comma or "·"`);
     let notesWords = 0;
     const nf = zip.file(`ppt/notesSlides/notesSlide${k}.xml`);
     if (nf) {
